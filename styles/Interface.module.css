@@ -16,12 +16,16 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-size: large;
+    font-weight: 600;
+    padding: 1.5%;
   }
   
   .section_from_currency {
     height: 33%;
     width: 90%;
-    background-color: lightgrey;
+    background-color: white;
+    border: lightgrey 1px solid;
     border-radius: 20px;
   }
   
@@ -32,14 +36,17 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-size: large;
+    font-weight: 600;
+    padding: 1.5%;
   }
   
   .section_to_currency {
     height: 33%;
     width: 90%;
-    background-color: lightgrey;
     border-radius: 20px;
     margin-bottom: 1vh;
+    border: lightgrey 1px solid;
   }
   
   .currency_dropdown_container {
@@ -55,7 +62,6 @@
   .currency_dropdown {
     width: 45%;
     height: 100%;
-    background-color: lightgrey;
     border-radius: 20px;
     font-weight: bold;
     text-align: center;

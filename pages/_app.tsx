@@ -1,6 +1,8 @@
 import '../styles/globals.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app';
+import React from 'react';
+import NavBar from '../components/NavBar';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
@@ -15,8 +17,8 @@ import {
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 const config = getDefaultConfig({
-  appName: 'RainbowKit App',
-  projectId: 'YOUR_PROJECT_ID',
+  appName: 'Blorm',
+  projectId: 'BLORM',
   chains: [
     mainnet,
     polygon,
@@ -35,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
         <RainbowKitProvider>
+          <NavBar />
           <Component {...pageProps} />
         </RainbowKitProvider>
       </QueryClientProvider>
