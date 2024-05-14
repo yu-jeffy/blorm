@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/Interface.module.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Select from 'react-select';
+// import { text } from 'stream/consumers';
+import { components } from 'react-select';
+
+
+const formatOptionLabel = ({ value, label, image }) => (
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+    <img src={image} alt={value} style={{ marginRight: '10px' }} />
+    {label}
+  </div>
+);
 
 const customStyles = {
     control: (provided) => ({
         ...provided,
-        borderRadius: '10px',
+        borderRadius: '3px',
         backgroundColor: '#ebebeb',
         border: 'gray solid 1px',
         outline: 'gray auto 2px',
@@ -16,9 +26,37 @@ const customStyles = {
         ...provided,
         color: 'gray',
     }),
+    menu: (provided) => ({
+        ...provided,
+        width: '25vw', // 50% of viewport width
+        height: '66vh', // 30% of viewport height
+        position: 'fixed',
+        top: '16.5vh', // 20% from the top of the viewport
+        left: '37.5vw', // 25% from the left of the viewport
+        borderRadius: '10px',
+        border: 'gray solid 1px',
+    }),
+    option: (provided, state) => ({
+        ...provided,
+        backgroundColor: state.isSelected ? '#ebebeb' : 'white',
+        color: 'black',
+        padding: '3.5vh 3.5vw',
+        height: '10vh',
+        width: '100% - 1vw',
+        textAlign: 'center',
+        alignItems: 'center',
+        fontSize: '1.4em',
+        fontWeight: 'bold',
+        borderRadius: '10px',
+        margin: '1vh .5vw',
+        boxSizing: 'border-box',
 
+    }),
+    singleValue: (provided) => ({
+        ...provided,
+        color: 'black',
+    }),
 };
-
 const currencyOptions1 = [
     { value: 'USD', label: 'USD' },
     { value: 'EUR', label: 'EUR' },
@@ -42,6 +80,21 @@ const Interface = () => {
         setMenuPortalTarget(document.body);
     }, []);
 
+    const SelectNetwork = (props) => (
+        <components.MenuList {...props}>
+            <div style={{ padding: '10px', fontWeight: 'bold' }}>Select Network</div>
+            {props.children}
+        </components.MenuList>
+    );
+
+    const SelectToken = (props) => (
+        <components.MenuList {...props}>
+            <div style={{ padding: '10px', fontWeight: 'bold' }}>Select Token</div>
+            {props.children}
+        </components.MenuList>
+    );
+    
+
     return (
         <div className={styles.container}>
             <div className={styles.section_from}>
@@ -59,7 +112,10 @@ const Interface = () => {
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection1}
-                        onChange={setSelection1} // Add this
+                        onChange={setSelection1}
+                        menuPosition="fixed"
+                        formatOptionLabel={formatOptionLabel}
+                        components={{ SelectNetwork }}
                     />
                     <Select
                         options={currencyOptions2}
@@ -67,7 +123,8 @@ const Interface = () => {
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection2}
-                        onChange={setSelection2} // Add this
+                        onChange={setSelection2}
+                        menuPosition="fixed"
                     />
                 </div>
                 <div className={styles.balance}>
@@ -85,7 +142,8 @@ const Interface = () => {
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection3}
-                        onChange={setSelection3} // Add this
+                        onChange={setSelection3}
+                        menuPosition="fixed"
                     />
                     <Select
                         options={currencyOptions2}
@@ -93,7 +151,8 @@ const Interface = () => {
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection4}
-                        onChange={setSelection4} // Add this
+                        onChange={setSelection2}
+                        menuPosition="fixed"
                     />
                 </div>
                 <div className={styles.balance}>

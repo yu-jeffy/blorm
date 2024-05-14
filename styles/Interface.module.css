@@ -62,7 +62,6 @@
   .currency_dropdown {
     width: 45%;
     height: 100%;
-    border-radius: 20px;
     font-weight: bold;
     text-align: center;
     appearance: none; /* Remove default appearance */
