@@ -4,13 +4,13 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Select from 'react-select';
 // import { text } from 'stream/consumers';
 import { components } from 'react-select';
-
+import Image from 'next/image';
 
 const formatOptionLabel = ({ value, label, image }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <img src={image} alt={value} style={{ marginRight: '10px' }} />
-    {label}
-  </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Image src={image} alt={value} width={30} height={30} />
+        {label}
+    </div>
 );
 
 const customStyles = {
@@ -21,6 +21,7 @@ const customStyles = {
         border: 'gray solid 1px',
         outline: 'gray auto 2px',
         height: '95%',
+
     }),
     dropdownIndicator: (provided) => ({
         ...provided,
@@ -29,9 +30,9 @@ const customStyles = {
     menu: (provided) => ({
         ...provided,
         width: '25vw', // 50% of viewport width
-        height: '66vh', // 30% of viewport height
+        // height: '66vh', // 30% of viewport height
         position: 'fixed',
-        top: '16.5vh', // 20% from the top of the viewport
+        top: '16vh', // 20% from the top of the viewport
         left: '37.5vw', // 25% from the left of the viewport
         borderRadius: '10px',
         border: 'gray solid 1px',
@@ -56,12 +57,12 @@ const customStyles = {
         ...provided,
         color: 'black',
     }),
+    MenuList: (provided) => ({
+        ...provided,
+        marginLeft: '20px',
+        height: '66vh',
+    }),
 };
-const currencyOptions1 = [
-    { value: 'USD', label: 'USD' },
-    { value: 'EUR', label: 'EUR' },
-    { value: 'GBP', label: 'GBP' },
-];
 
 const currencyOptions2 = [
     { value: 'BTC', label: 'BTC' },
@@ -69,31 +70,42 @@ const currencyOptions2 = [
     { value: 'LTC', label: 'LTC' },
 ];
 
+let networkOptions = [];
+
 const Interface = () => {
     const [menuPortalTarget, setMenuPortalTarget] = useState(null);
-    const [selection1, setSelection1] = useState(currencyOptions1[0]);
-    const [selection2, setSelection2] = useState(currencyOptions2[0]);
-    const [selection3, setSelection3] = useState(currencyOptions1[0]);
-    const [selection4, setSelection4] = useState(currencyOptions2[0]);
+    const [selection1, setSelection1] = useState(null);
+    const [selection2, setSelection2] = useState(null);
+    const [selection3, setSelection3] = useState(null);
+    const [selection4, setSelection4] = useState(null);
 
     useEffect(() => {
+        fetch('/network/networkList.json')
+            .then(response => response.json())
+            .then(data => {
+                networkOptions = data.networkOptions;
+                setSelection1(networkOptions[0]);
+                setSelection3(networkOptions[0]);
+            })
+            .catch(error => console.error('Error:', error));
+
         setMenuPortalTarget(document.body);
     }, []);
 
     const SelectNetwork = (props) => (
         <components.MenuList {...props}>
-            <div style={{ padding: '10px', fontWeight: 'bold' }}>Select Network</div>
+            <div style={{ textAlign: 'center', width: '100%', padding: '10px', fontWeight: 'bold' }}>Select Network</div>
             {props.children}
         </components.MenuList>
     );
 
     const SelectToken = (props) => (
         <components.MenuList {...props}>
-            <div style={{ padding: '10px', fontWeight: 'bold' }}>Select Token</div>
+            <div style={{ textAlign: 'center', width: '100%', padding: '10px', fontWeight: 'bold' }}>Select Token</div>
             {props.children}
         </components.MenuList>
     );
-    
+
 
     return (
         <div className={styles.container}>
@@ -107,7 +119,7 @@ const Interface = () => {
             <div className={styles.section_from_currency}>
                 <div className={styles.currency_dropdown_container}>
                     <Select
-                        options={currencyOptions1}
+                        options={networkOptions}
                         className={styles.currency_dropdown}
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
@@ -115,7 +127,7 @@ const Interface = () => {
                         onChange={setSelection1}
                         menuPosition="fixed"
                         formatOptionLabel={formatOptionLabel}
-                        components={{ SelectNetwork }}
+                        components={{ MenuList: SelectNetwork }}
                     />
                     <Select
                         options={currencyOptions2}
@@ -125,6 +137,8 @@ const Interface = () => {
                         defaultValue={selection2}
                         onChange={setSelection2}
                         menuPosition="fixed"
+                        formatOptionLabel={formatOptionLabel}
+                        components={{ MenuList: SelectToken }}
                     />
                 </div>
                 <div className={styles.balance}>
@@ -137,13 +151,15 @@ const Interface = () => {
             <div className={styles.section_to_currency}>
                 <div className={styles.currency_dropdown_container}>
                     <Select
-                        options={currencyOptions1}
+                        options={networkOptions}
                         className={styles.currency_dropdown}
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection3}
                         onChange={setSelection3}
                         menuPosition="fixed"
+                        formatOptionLabel={formatOptionLabel}
+                        components={{ MenuList: SelectNetwork }}
                     />
                     <Select
                         options={currencyOptions2}
@@ -151,8 +167,10 @@ const Interface = () => {
                         styles={customStyles}
                         menuPortalTarget={menuPortalTarget}
                         defaultValue={selection4}
-                        onChange={setSelection2}
+                        onChange={setSelection4}
                         menuPosition="fixed"
+                        formatOptionLabel={formatOptionLabel}
+                        components={{ MenuList: SelectToken }}
                     />
                 </div>
                 <div className={styles.balance}>
